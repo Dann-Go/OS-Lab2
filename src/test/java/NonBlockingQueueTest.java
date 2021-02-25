@@ -50,7 +50,6 @@ class NonBlockingQueueTest {
     public void nullPopTest() {
         NonBlockingQueue<String> queue = new NonBlockingQueue<>();
         assertNull(queue.pop());
-
     }
 
     @Test
