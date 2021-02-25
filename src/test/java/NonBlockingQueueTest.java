@@ -1,10 +1,11 @@
 import org.junit.jupiter.api.Test;
+import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.*;
 
 class NonBlockingQueueTest {
 
     @Test
-    public void  PushPopEmptyTest() throws InterruptedException {
+    public void  pushPopEmptyTest() throws InterruptedException {
         NonBlockingQueue<Integer> queue = new NonBlockingQueue<>();
 
         Thread[] threads = new Thread[20];
@@ -22,18 +23,15 @@ class NonBlockingQueueTest {
                 }
             });
         }
-
-        for (Thread t : threads) {
-            t.start();
-        }
-        for (Thread t : threads) {
+        IntStream.range(0, 20).forEach(i -> threads[i].start());
+        for(Thread t : threads) {
             t.join();
         }
         assertTrue(queue.empty());
     }
 
     @Test
-    public void ContainsTest() throws InterruptedException {
+    public void containsTest() throws InterruptedException {
         NonBlockingQueue<Integer> queue = new NonBlockingQueue<>();
         Thread thread1 = new Thread(() -> queue.push(10));
         Thread thread2 = new Thread(() -> queue.push(20));
@@ -49,14 +47,14 @@ class NonBlockingQueueTest {
     }
 
     @Test
-    public void NullPopTest(){
+    public void nullPopTest() {
         NonBlockingQueue<String> queue = new NonBlockingQueue<>();
         assertNull(queue.pop());
 
     }
 
     @Test
-    public void PeekTest(){
+    public void peekTest() {
         NonBlockingQueue<String> queue = new NonBlockingQueue<>();
         queue.push("Simon");
         assertEquals("Simon", queue.peek());
